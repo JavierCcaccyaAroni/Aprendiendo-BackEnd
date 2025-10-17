@@ -1,7 +1,6 @@
 from flask import Blueprint, request
 from utils import response_success, response_error
 from app.models.tasks import Task
-from app.db import db
 
 
 task_route = Blueprint('task_route', __name__)
@@ -78,3 +77,4 @@ def delete_task(task_id):
         return response_success("Task deleted")
     except Exception as e:
         return response_error(str(e))
+
