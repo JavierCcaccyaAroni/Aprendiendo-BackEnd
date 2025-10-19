@@ -1,9 +1,10 @@
 # Blueprint permite crear modulos de la aplicación
-from flask import Blueprint
+from flask import Blueprint, request
 from utils import response_success, response_error
 from app.models.users import User
 from sqlalchemy.exc import IntegrityError
 from app.db import db
+from flask_bcrypt import Bcrypt
 
 # crear la instancia de Blueprint
 

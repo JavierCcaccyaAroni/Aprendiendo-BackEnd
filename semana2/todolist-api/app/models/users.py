@@ -14,7 +14,7 @@ class User(db.Model):
     password = db.Column(db.String(255))
     phone = db.Column(db.String(255))
     created_at = db.Column(db.DateTime())
-    update_at = db.Column(db.DateTime())
+    updated_at = db.Column(db.DateTime())
 
     # Creamos los constructores para recibir y mandar información
     def __int__(self, name, lastname, email, username, address, password, phone):
