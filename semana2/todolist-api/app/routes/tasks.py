@@ -55,9 +55,10 @@ def update_task(task_id):
         task.title = new_task.get("title", task.title)
         task.category = new_task.get("category", task.category)
         task.priority = new_task.get("priority", task.priority)
-        task.status = new_task.get("priority", task.status)
-        task.is_done = new_task.get("priority", task.is_done)
-        task.due_date = new_task.get("priority", task.due_date)
+        task.status = new_task.get("status", task.status)
+        task.is_done = new_task.get("is_done", task.is_done)
+        task.due_date = new_task.get("due_date", task.due_date)
+        task.user_id = new_task.get("user_id", task.user_id)
 
         db.session.commit()
 
