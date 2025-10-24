@@ -2,6 +2,7 @@
 from flask import Blueprint, request
 from utils import response_success, response_error
 from app.models.users import User
+from app.models.tasks import Task
 from sqlalchemy.exc import IntegrityError
 from app.crypt import bcrypt
 from app.db import db
@@ -64,5 +65,25 @@ def update_user(user_id):
         db.session.commit()
 
         return response_success("Usuario actualizado correctamente")
+    except Exception as e:
+        return response_error(str(e))
+    
+@user_route.route("/users/<int:user_id>", methods=['DELETE'])
+def delete_user(user_id):
+    try:
+        # antes de eliminar el usuario, se deben eliminar sus tareas asociadas
+        tasks_by_user = Task.query.filter_by(user_id=user_id).all()
+
+        if len(tasks_by_user) is 0:
+            user = User.query.get(user_id)
+
+            if not user:
+                return response_error("User not found")
+
+            db.session.delete(user)
+            db.session.commit()
+
+            return response_success("User deleted")
+        return response_success("User has no tasks to delete")
     except Exception as e:
         return response_error(str(e))
