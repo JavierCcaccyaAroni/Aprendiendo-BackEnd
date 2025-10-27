@@ -87,3 +87,23 @@ def delete_user(user_id):
         return response_success("User has no tasks to delete")
     except Exception as e:
         return response_error(str(e))
+
+
+@user_route.route("/users/login", methods=['POST'])
+def login():
+    try:
+        body = request.get_json()
+        email = body.get("email")
+        password = body.get("password")
+
+        user = User.query.filter_by(email=email).first()
+
+        if not user:
+            return response_error("Invalid username or password")
+
+        if not bcrypt.check_password_hash(user.password, password):
+            return response_error("Invalid username or password")
+        
+        return response_success(user.to_json())
+    except Exception as e:
+        return response_error(str(e))
