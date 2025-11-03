@@ -2,12 +2,14 @@ from flask import Blueprint, request
 from utils import response_success, response_error
 from app.models.tasks import Task
 from app.db import db
+from flask_jwt_extended import jwt_required
 
 
 task_route = Blueprint('task_route', __name__)
 
 
 @task_route.route("/tasks")
+@jwt_required() # require authentication
 def get_tasks():
     try:
         tasks = Task.query.all()
@@ -25,6 +27,7 @@ def get_tasks():
 
 
 @task_route.route("/tasks/<int:task_id>")
+@jwt_required() # require authentication
 def get_task(task_id):
     result = Task.query.get(task_id)
 
@@ -35,6 +38,7 @@ def get_task(task_id):
 
 
 @task_route.route("/tasks", methods=["POST"])
+@jwt_required() # require authentication
 def add_task():
     try:
         task = Task(**request.get_json())
@@ -47,6 +51,7 @@ def add_task():
 
 
 @task_route.route("/tasks/<int:task_id>", methods=["PUT"])
+@jwt_required() # require authentication
 def update_task(task_id):
     try:
         task = Task.query.get(task_id)
@@ -71,6 +76,7 @@ def update_task(task_id):
 
 
 @task_route.route("/tasks/<int:task_id>", methods=['DELETE'])
+@jwt_required() # require authentication
 def delete_task(task_id):
     try:
         task = Task.query.get(task_id)

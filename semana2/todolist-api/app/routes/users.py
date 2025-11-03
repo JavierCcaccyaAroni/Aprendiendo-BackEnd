@@ -6,9 +6,10 @@ from app.models.tasks import Task
 from sqlalchemy.exc import IntegrityError
 from app.crypt import bcrypt
 from app.db import db
+from flask_jwt_extended import create_access_token
+from datetime import timedelta
 
-# crear la instancia de Blueprint
-
+# instance del blueprint
 user_route = Blueprint('user_route', __name__)
 
 @user_route.route("/users")
@@ -89,7 +90,7 @@ def delete_user(user_id):
         return response_error(str(e))
 
 
-@user_route.route("/users/login", methods=['POST'])
+@user_route.route("/login", methods=['POST'])
 def login():
     try:
         body = request.get_json()
@@ -104,6 +105,11 @@ def login():
         if not bcrypt.check_password_hash(user.password, password):
             return response_error("Invalid username or password")
         
-        return response_success(user.to_json())
+        # Generar el token JWT
+        token = create_access_token(identity=user.email, expires_delta=timedelta(weeks=1))
+        return response_success({
+            'user': user.to_json(),
+            'access_token': token
+        })
     except Exception as e:
         return response_error(str(e))

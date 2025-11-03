@@ -3,6 +3,7 @@ from app.routes.tasks import task_route
 from app.routes.users import user_route
 from app.db import db
 from app.crypt import bcrypt
+from app.jwt import jwt
 from app.config import Config
 
 # instance de Flask
@@ -13,8 +14,12 @@ app.config.from_object(Config)
 app.register_blueprint(task_route)
 app.register_blueprint(user_route)
 
+# Initialize database
 db.init_app(app)
+# Initialize Bcrypt
 bcrypt.init_app(app)
+# Initialize JWT
+jwt.init_app(app)
 
 with app.app_context():
     db.create_all()
