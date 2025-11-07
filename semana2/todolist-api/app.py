@@ -5,9 +5,11 @@ from app.db import db
 from app.crypt import bcrypt
 from app.jwt import jwt
 from app.config import Config
+from flask_cors import CORS
 
 # instance de Flask
 app = Flask(__name__)
+CORS(app)
 
 app.config.from_object(Config)
 

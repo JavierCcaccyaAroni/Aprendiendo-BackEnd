@@ -6,13 +6,14 @@ from app.models.tasks import Task
 from sqlalchemy.exc import IntegrityError
 from app.crypt import bcrypt
 from app.db import db
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required
 from datetime import timedelta
 
 # instance del blueprint
 user_route = Blueprint('user_route', __name__)
 
 @user_route.route("/users")
+@jwt_required() # require authentication
 def get_users():
     try:
         users = User.query.all()
@@ -22,6 +23,7 @@ def get_users():
         return response_error(str(e))
 
 @user_route.route("/users/<int:user_id>")
+@jwt_required() # require authentication
 def get_user(user_id):
     try:
         user = User.query.get(user_id)
@@ -48,6 +50,7 @@ def add_user():
         return response_error(str(e))
 
 @user_route.route("/users/<int:user_id>", methods=["PUT"])
+@jwt_required() # require authentication
 def update_user(user_id):
     try:
         user = User.query.get(user_id)
@@ -70,6 +73,7 @@ def update_user(user_id):
         return response_error(str(e))
     
 @user_route.route("/users/<int:user_id>", methods=['DELETE'])
+@jwt_required() # require authentication
 def delete_user(user_id):
     try:
         # antes de eliminar el usuario, se deben eliminar sus tareas asociadas

@@ -9,7 +9,6 @@ task_route = Blueprint('task_route', __name__)
 
 
 @task_route.route("/tasks")
-@jwt_required() # require authentication
 def get_tasks():
     try:
         tasks = Task.query.all()
