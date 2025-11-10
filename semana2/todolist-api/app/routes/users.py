@@ -110,7 +110,7 @@ def login():
             return response_error("Invalid username or password")
         
         # Generar el token JWT
-        token = create_access_token(identity=user.email, expires_delta=timedelta(weeks=1))
+        token = create_access_token(identity=user.email, expires_delta=timedelta(weeks=3))
         return response_success({
             'user': user.to_json(),
             'access_token': token

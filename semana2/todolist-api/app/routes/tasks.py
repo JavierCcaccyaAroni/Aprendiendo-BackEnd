@@ -8,10 +8,10 @@ from flask_jwt_extended import jwt_required
 task_route = Blueprint('task_route', __name__)
 
 
-@task_route.route("/tasks")
-def get_tasks():
+@task_route.route("/tasks/<int:user_id>")
+def get_tasks(user_id):
     try:
-        tasks = Task.query.all()
+        tasks = Task.query.filter_by(user_id=user_id) # SELECT * FROM tasks WHERE user_id = user_id
         # comprehesion (for en una linea)
         serialized_tasks = [task.to_json() for task in tasks]
         """
